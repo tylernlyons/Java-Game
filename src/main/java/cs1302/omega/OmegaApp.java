@@ -10,7 +10,13 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.CornerRadii;
+import javafx.geometry.Insets;
+import javafx.scene.paint.ImagePattern;
 /**
  * REPLACE WITH NON-SHOUTING DESCRIPTION OF YOUR APP.
  */
@@ -26,33 +32,28 @@ public class OmegaApp extends Application {
     @Override
     public void start(Stage stage) {
 
-        // demonstrate how to load local asset using "file:resources/"
-        Image bannerImage = new Image("file:resources/readme-banner.png");
-        ImageView banner = new ImageView(bannerImage);
-        banner.setPreserveRatio(true);
-        banner.setFitWidth(640);
-
         // some labels to display information
-        Label notice = new Label("Modify the starter code to suit your needs.");
+        Label notice = new Label("Written for WASD, aka for normal people.");
         Label instructions
-            = new Label("Move left/right with arrow keys; click rectangle to teleport.");
+            = new Label("In order to ensure proper movemnet, make deliberate keystrokes.");
 
         // demo game provided with the starter code
-        DemoGame game = new DemoGame(640, 240);
-
+        DemoGame game = new DemoGame(900, 720);
         // setup scene
-        VBox root = new VBox(banner, notice, instructions, game);
+        VBox root = new VBox( notice, instructions, game);
         Scene scene = new Scene(root);
 
         // setup stage
-        stage.setTitle("OmegaApp!");
+        stage.setTitle("Frogger");
         stage.setScene(scene);
         stage.setOnCloseRequest(event -> Platform.exit());
         stage.sizeToScene();
         stage.show();
 
+
         // play the game
         game.play();
+
 
     } // start
 

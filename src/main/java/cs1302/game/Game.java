@@ -105,6 +105,7 @@ public abstract class Game extends Region {
      * @return {@code true} if the key is pressed; otherwise {@code false}
      */
     protected final boolean isKeyPressed(KeyCode key) {
+
         return keysPressed.get(key.getCode());
     } // isKeyPressed
 
@@ -118,6 +119,7 @@ public abstract class Game extends Region {
     protected final boolean isKeyPressed(KeyCode key, Runnable handler) {
         if (isKeyPressed(key)) {
             handler.run();
+            keysPressed.clear(key.getCode());
             return true;
         } else {
             return false;

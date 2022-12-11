@@ -1,54 +1,291 @@
 package cs1302.game;
 
+
+import java.util.TimerTask;
+import java.util.Timer;
+import java.lang.Thread;
 import java.util.Random;
 import java.util.logging.Level;
-
+import javafx.application.Platform;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.lang.System;
+import java.lang.Math;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Region;
 import javafx.scene.shape.Rectangle;
-
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.CornerRadii;
+import javafx.geometry.Insets;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.control.TextField;
 /**
  * An example of a simple game in JavaFX. The play can move the rectangle left/right
  * with the arrow keys or teleport the rectangle by clicking it!
  */
 public class DemoGame extends Game {
-
-    private Random rng;       // random number generator
-    private Rectangle player; // some rectangle to represent the player
+    private int rng; //random number generator
+    ImageView player = new ImageView("file:resources/frog.jpg");
     private IdleCat cat;      // the not so idle cat (see IdleCat.java)
-
+    private ImageView l = new ImageView("file:resources/log.jpg");
+    private ImageView w = new ImageView("file:resources/water.jpg");
+    private ImageView f = new ImageView("file:resources/frog.jpg");
+    private ImageView g = new ImageView("file:resources/grass.jpg");
+    private ImageView c = new ImageView("file:resources/car.jpg");
+    private ImageView r = new ImageView("file:resources/road.jpg");
+    private ImageView go = new ImageView("file:resources/gmov.jpg");
+    private ImageView win = new ImageView("file:resources/win.jpg");
+    private double ts = 73;
+    private GridPane gridPane = new GridPane();
+    private ImageView[][] pGrid = new ImageView[9][10];
+    private int x = 4;
+    private int y = 9;
+    private ImageView lm = g;
+    private int score = 0;
+    private TextField scoreField;
+    private final long period = 1000;
+    private long oTime = System.currentTimeMillis() - period;
+    private Timer timer = new Timer("Timer");
+    private long delay = 3000L;
+    private ImageView move = new ImageView();
+    private ImageView surf = new ImageView();
+    private int rng1;
     /**
      * Construct a {@code DemoGame} object.
      * @param width scene width
      * @param height scene height
      */
     public DemoGame(int width, int height) {
-        super(width, height, 60);            // call parent constructor
+        super(width, height, 1000);            // call parent constructor
         setLogLevel(Level.INFO);             // enable logging
-        this.rng = new Random();             // random number generator
-        this.player = new Rectangle(20, 20); // some rectangle to represent the player
         this.cat  = new IdleCat(this);       // the not so idle cat (see IdleCat.java)
+        go.setFitHeight((double)height);
+        go.setFitWidth((double)width);
     } // DemoGame
+    TimerTask task = new TimerTask() {
+            public void run() {
+                Platform.exit();
+            } //run
+        }; //TimerTask
+
+    public void tick() {
+        long cTime = System.currentTimeMillis();
+
+        if((cTime - oTime) >= period) {
+            oTime = cTime;
+            carLogUpdate();
+            spawnCar();
+            spawnLog();
+        } //if
+    } //tick
 
     /** {@inheritDoc} */
     @Override
     protected void init() {
         // setup subgraph for this component
-        getChildren().addAll(player, cat);         // add to main container
-        // setup player
-        player.setX(50);                           // 50px in the x direction (right)
-        player.setY(50);                           // 50ps in the y direction (down)
-        player.setOnMouseClicked(event -> handleClickPlayer(event));
-        // setup the cat
-        cat.setX(0);
-        cat.setY(0);
+
+        for (int i = 0; i < pGrid.length; i++) {
+            for (int j = 0; j < pGrid[0].length; j++) {
+                rng = (int)(Math.random() * 5) + 1; // random number generator
+                Region rect = new Region();
+                rect.setMinSize(ts,ts);
+                rect.setPrefSize(ts,ts);
+                rect.setMaxSize(ts,ts);
+                pGrid[i][j] = r;
+                if (j == pGrid[0].length - 1 || j == 2) {
+                    pGrid[i][j] = g;
+                } else if (j == 0) {
+                    if (i % 2 == 0) {
+                        pGrid[i][j] = win;
+                    } else {
+                        pGrid[i][j] = w;
+                    }
+                } else if (j == 1 || j == 3) {
+                    if (i % 2 == 0) {
+                        pGrid[i][j] = l;
+                            } else {
+                        pGrid[i][j] = w;
+                    }
+                } else if (pGrid[i][j] != w && pGrid[i][j] != g && pGrid[i][j] != l
+                    && pGrid[i][j] != win && rng == 1) {
+                    pGrid[i][j] = c;
+                } //if
+                pGrid[4][9] = f;
+                rect.setBackground(new Background(new BackgroundFill(new ImagePattern
+                (pGrid[i][j].getImage()), CornerRadii.EMPTY, Insets.EMPTY)));
+                gridPane.add(rect, i, j);
+            } //for
+        } //for
+        getChildren().addAll(gridPane);
     } // init
+
+    protected void spawnCar() {
+        rng = (int)(Math.random() * 5) + 4;
+        pGrid[8][rng] = c;
+        uImage(rng, 8);
+    } //spawnCars;
+
+    protected void spawnLog() {
+        rng = (int)(Math.random() * 3) + 1;
+        if (rng == 3) {
+            pGrid[8][rng] = l;
+            uImage(rng,8);
+        } else if (rng == 1) {
+            pGrid[8][rng] = l;
+            uImage(rng,8);
+        } //if
+    } //spawnLog
+    protected void uImage(int x, int y) {
+        Region img = new Region();
+        img.setBackground(new Background(new BackgroundFill(new ImagePattern
+        (pGrid[x][y].getImage()), CornerRadii.EMPTY, Insets.EMPTY)));
+        gridPane.add(img,x,y);
+    } //uImage
+
+    protected void upMove() {
+        if (pGrid[x][y - 1] == c || pGrid[x][y - 1] == w) {
+            getChildren().add(go);
+            timer.schedule(task, delay);
+        } //if
+         if (y == pGrid[0].length - 1) {
+             pGrid[x][y] = g;
+             uImage(x,y);
+             y--;
+             pGrid[x][y] = f;
+             uImage(x,y);
+         } else if (pGrid[x][y - 1] == win) {
+             pGrid[x][y - 1] = f;
+             pGrid[x][y] = l;
+             uImage(x,y);
+             y--;
+             uImage(x,y);
+             x = 4;
+             y = 8;
+             pGrid[x][y] = f;
+             uImage(x,y);
+             score += 5;
+             scoreField = new TextField("Score: " + score);
+             getChildren().add(scoreField);
+         } else if(pGrid[x][y - 1] == l && pGrid[x][y - 3] == win) {
+             pGrid[x][y - 1] = f;
+             pGrid[x][y] = l;
+             uImage(x,y);
+             y--;
+             uImage(x,y);
+         } else {
+             pGrid[x][y] = r;
+             uImage(x,y);
+             y--;
+             pGrid[x][y] = f;
+             uImage(x,y);
+         } //if
+    } //upMove
+
+
+    protected void downMove() {
+        if (pGrid[x][y + 1] == c || pGrid[x][y + 1] == w) {
+            getChildren().add(go);
+            timer.schedule(task, delay);
+        } //if
+        pGrid[x][y + 1] = f;
+        if (y == pGrid[0].length - 1) {
+            pGrid[x][y] = g;
+        } //if
+        else {
+            pGrid[x][y] = r;
+        } //if
+        uImage(x,y);
+        y++;
+        uImage(x,y);
+    }
+
+    protected void rightMove() {
+        if (pGrid[x + 1][y] == c || pGrid[x + 1][y] == w) {
+            getChildren().add(go);
+            timer.schedule(task, delay);
+        } //if
+
+        pGrid[x + 1][y] = f;
+        if (y == pGrid[0].length - 1) {
+            pGrid[x][y] = g;
+        } //if
+        else {
+            pGrid[x][y] = r;
+        } //if
+        uImage(x,y);
+        x++;
+        uImage(x,y);
+    }
+
+    protected void leftMove() {
+        if (pGrid[x - 1][y] == c || pGrid[x - 1][y] == w) {
+            getChildren().add(go);
+            timer.schedule(task, delay);
+        } //if
+        pGrid[x - 1][y] = f;
+        if (y == pGrid[0].length - 1) {
+            pGrid[x][y] = g;
+        } //if
+        else {
+            pGrid[x][y] = r;
+        } //if
+        uImage(x,y);
+        x--;
+        uImage(x,y);
+    }
+
+    public void carLogUpdate() {
+        for (int i = 0; i < pGrid.length; i++) {
+            for (int j = 0; j < pGrid[0].length; j++) {
+                if (pGrid[i][j] == c || pGrid[i][j] == l) {
+                    move = pGrid[i][j];
+                    if (pGrid[i][j] == c) {
+                        surf = r;
+                    } else {
+                        surf = w;
+                    } //if
+                    if (i == 0) {
+                        pGrid[i][j] = surf;
+                        uImage(i,j);
+                    } else {
+                        if (pGrid[i - 1][j] == f) {
+                            getChildren().add(go);
+                            timer.schedule(task, delay);
+                        } //if
+                        pGrid[i][j] = surf;
+                        pGrid[i - 1][j] = move;
+                        uImage(i,j);
+                        uImage(i - 1, j);
+                    } //if
+                    if (pGrid[i][j] == f && pGrid[i + 3][j] == win) {
+                        pGrid[i][j] = w;
+                        x--;
+                        uImage(i,j);
+                        i--;
+                        pGrid[i][j] = f;
+                        uImage(i,j);
+                    } //if
+                } //if
+            } //for
+        } //for
+    } //carUpdate
+
 
     /** {@inheritDoc} */
     @Override
     protected void update() {
-
         // (x, y)         In computer graphics, coordinates along an x-axis and
         // (0, 0) -x--->  y-axis are used. When compared to the standard
         // |              Cartesian plane that most students are familiar with,
@@ -56,27 +293,13 @@ public class DemoGame extends Game {
         // |              in the downward direction! Keep this in mind when
         // v              adjusting the x and y positions of child nodes.
 
+        tick();
+
         // update player position
-        isKeyPressed( KeyCode.LEFT, () -> player.setX(player.getX() - 10.0));
-        isKeyPressed(KeyCode.RIGHT, () -> player.setX(player.getX() + 10.0));
-
-        // <--------------------------------------------------------------------
-        // try adding the code to make the player move up and down!
-        // <--------------------------------------------------------------------
-
-        // update idle cat
-        cat.update();
+        isKeyPressed(KeyCode.S, () -> downMove());
+        isKeyPressed(KeyCode.W, () -> upMove());
+        isKeyPressed(KeyCode.A, () -> leftMove());
+        isKeyPressed(KeyCode.D, () -> rightMove());
 
     } // update
-
-    /**
-     * Move the player rectangle to a random position.
-     * @param event associated mouse event
-     */
-    private void handleClickPlayer(MouseEvent event) {
-        logger.info(event.toString());
-        player.setX(rng.nextDouble() * (getWidth() - player.getWidth()));
-        player.setY(rng.nextDouble() * (getHeight() - player.getHeight()));
-    } // handleClickPlayer
-
 } // DemoGame
