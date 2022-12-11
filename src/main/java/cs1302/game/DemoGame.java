@@ -31,10 +31,12 @@ import javafx.scene.layout.CornerRadii;
 import javafx.geometry.Insets;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.control.TextField;
+
 /**
  * An example of a simple game in JavaFX. The play can move the rectangle left/right
  * with the arrow keys or teleport the rectangle by clicking it!
  */
+
 public class DemoGame extends Game {
     private int rng; //random number generator
     ImageView player = new ImageView("file:resources/frog.jpg");
@@ -62,11 +64,13 @@ public class DemoGame extends Game {
     private ImageView move = new ImageView();
     private ImageView surf = new ImageView();
     private int rng1;
+
     /**
      * Construct a {@code DemoGame} object.
      * @param width scene width
      * @param height scene height
      */
+
     public DemoGame(int width, int height) {
         super(width, height, 1000);            // call parent constructor
         setLogLevel(Level.INFO);             // enable logging
@@ -74,16 +78,19 @@ public class DemoGame extends Game {
         go.setFitHeight((double)height);
         go.setFitWidth((double)width);
     } // DemoGame
+
     TimerTask task = new TimerTask() {
             public void run() {
                 Platform.exit();
             } //run
         }; //TimerTask
+    /**
+     * Creates a delay for updating {@link GridPane}.
+     */
 
     public void tick() {
         long cTime = System.currentTimeMillis();
-
-        if((cTime - oTime) >= period) {
+        if ((cTime - oTime) >= period) {
             oTime = cTime;
             carLogUpdate();
             spawnCar();
@@ -115,7 +122,7 @@ public class DemoGame extends Game {
                 } else if (j == 1 || j == 3) {
                     if (i % 2 == 0) {
                         pGrid[i][j] = l;
-                            } else {
+                    } else {
                         pGrid[i][j] = w;
                     }
                 } else if (pGrid[i][j] != w && pGrid[i][j] != g && pGrid[i][j] != l
@@ -131,11 +138,21 @@ public class DemoGame extends Game {
         getChildren().addAll(gridPane);
     } // init
 
+    /**
+     * Generates a car {@link ImageView} randomly at the end of the {@link GridPane}
+     * in one of the road rows.
+     */
+
     protected void spawnCar() {
         rng = (int)(Math.random() * 5) + 4;
         pGrid[8][rng] = c;
         uImage(rng, 8);
     } //spawnCars;
+
+    /**
+     * Generates a log {@link ImageView} randomly at the end of the {@link GridPane}
+     * in either the 2nd or 4th row.
+     */
 
     protected void spawnLog() {
         rng = (int)(Math.random() * 3) + 1;
@@ -147,52 +164,66 @@ public class DemoGame extends Game {
             uImage(rng,8);
         } //if
     } //spawnLog
+
+    /**
+     * Creates and applies the {@link ImageView} {@link Region} to the {@link GridPane}.
+     * @param x The x value of the {@link ImageView}
+     * @param y The y value of the {@link ImageView}
+     */
+
     protected void uImage(int x, int y) {
         Region img = new Region();
         img.setBackground(new Background(new BackgroundFill(new ImagePattern
-        (pGrid[x][y].getImage()), CornerRadii.EMPTY, Insets.EMPTY)));
+            (pGrid[x][y].getImage()), CornerRadii.EMPTY, Insets.EMPTY)));
         gridPane.add(img,x,y);
     } //uImage
+
+    /**
+     * Moves the frog up in the {@link GridPane}.
+     */
 
     protected void upMove() {
         if (pGrid[x][y - 1] == c || pGrid[x][y - 1] == w) {
             getChildren().add(go);
             timer.schedule(task, delay);
         } //if
-         if (y == pGrid[0].length - 1) {
-             pGrid[x][y] = g;
-             uImage(x,y);
-             y--;
-             pGrid[x][y] = f;
-             uImage(x,y);
-         } else if (pGrid[x][y - 1] == win) {
-             pGrid[x][y - 1] = f;
-             pGrid[x][y] = l;
-             uImage(x,y);
-             y--;
-             uImage(x,y);
-             x = 4;
-             y = 8;
-             pGrid[x][y] = f;
-             uImage(x,y);
-             score += 5;
-             scoreField = new TextField("Score: " + score);
-             getChildren().add(scoreField);
-         } else if(pGrid[x][y - 1] == l && pGrid[x][y - 3] == win) {
-             pGrid[x][y - 1] = f;
-             pGrid[x][y] = l;
-             uImage(x,y);
-             y--;
-             uImage(x,y);
-         } else {
-             pGrid[x][y] = r;
-             uImage(x,y);
-             y--;
-             pGrid[x][y] = f;
-             uImage(x,y);
-         } //if
+        if (y == pGrid[0].length - 1) {
+            pGrid[x][y] = g;
+            uImage(x,y);
+            y--;
+            pGrid[x][y] = f;
+            uImage(x,y);
+        } else if (pGrid[x][y - 1] == win) {
+            pGrid[x][y - 1] = f;
+            pGrid[x][y] = l;
+            uImage(x,y);
+            y--;
+            uImage(x,y);
+            x = 4;
+            y = 8;
+            pGrid[x][y] = f;
+            uImage(x,y);
+            score += 5;
+            scoreField = new TextField("Score: " + score);
+            getChildren().add(scoreField);
+        } else if (pGrid[x][y - 1] == l && pGrid[x][y - 3] == win) {
+            pGrid[x][y - 1] = f;
+            pGrid[x][y] = l;
+            uImage(x,y);
+            y--;
+            uImage(x,y);
+        } else {
+            pGrid[x][y] = r;
+            uImage(x,y);
+            y--;
+            pGrid[x][y] = f;
+            uImage(x,y);
+        } //if
     } //upMove
 
+     /**
+     * Moves the frog down in the {@link GridPane}.
+     */
 
     protected void downMove() {
         if (pGrid[x][y + 1] == c || pGrid[x][y + 1] == w) {
@@ -202,14 +233,17 @@ public class DemoGame extends Game {
         pGrid[x][y + 1] = f;
         if (y == pGrid[0].length - 1) {
             pGrid[x][y] = g;
-        } //if
-        else {
+        } else {
             pGrid[x][y] = r;
         } //if
         uImage(x,y);
         y++;
         uImage(x,y);
     }
+
+    /**
+     * Moves the frog right in the {@link GridPane}.
+     */
 
     protected void rightMove() {
         if (pGrid[x + 1][y] == c || pGrid[x + 1][y] == w) {
@@ -220,14 +254,17 @@ public class DemoGame extends Game {
         pGrid[x + 1][y] = f;
         if (y == pGrid[0].length - 1) {
             pGrid[x][y] = g;
-        } //if
-        else {
+        } else {
             pGrid[x][y] = r;
         } //if
         uImage(x,y);
         x++;
         uImage(x,y);
     }
+
+     /**
+     * Moves the frog left in the {@link GridPane}.
+     */
 
     protected void leftMove() {
         if (pGrid[x - 1][y] == c || pGrid[x - 1][y] == w) {
@@ -237,14 +274,17 @@ public class DemoGame extends Game {
         pGrid[x - 1][y] = f;
         if (y == pGrid[0].length - 1) {
             pGrid[x][y] = g;
-        } //if
-        else {
+        } else {
             pGrid[x][y] = r;
         } //if
         uImage(x,y);
         x--;
         uImage(x,y);
     }
+
+    /**
+     * Updates the position of the logs and cars in the {@link GridPane}.
+     */
 
     public void carLogUpdate() {
         for (int i = 0; i < pGrid.length; i++) {

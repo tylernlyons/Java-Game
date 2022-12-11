@@ -18,8 +18,10 @@ import javafx.scene.layout.CornerRadii;
 import javafx.geometry.Insets;
 import javafx.scene.paint.ImagePattern;
 /**
- * REPLACE WITH NON-SHOUTING DESCRIPTION OF YOUR APP.
+ * Recreation of the classical arcade game Frogger. Allows the user
+ * to play the classical game with WASD, or other input.
  */
+
 public class OmegaApp extends Application {
 
     /**

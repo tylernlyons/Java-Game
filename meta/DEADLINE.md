@@ -7,24 +7,35 @@ Markdown is transformed into nice looking HTML.
 
 ## Part 1: App Description
 
-> Please provide a firendly description of your app, including the app
-> category that you chose, and the primary functions available to users
-> of the app.
+> Please provide a friendly description of your app, including the app category
+> that you chose, and the primary functions available to users of the app.
 
-> **Also, include the GitHub `https` URL to your repository.**
+> **Also, incluse the GitHub 'https' URL to your repository.**
 
-TODO WRITE / REPLACE
+ This app is a rendition of the classical arcade game
+ Frogger. Users can utilize the WASD keys to move the frog
+ to the five different goals to score points. Watch out for
+ the cars and the running streams.
+
+ https://github.com/tylernlyons/cs1302-omega
+
+
 
 ## Part 2: New
 
 > What is something new and/or exciting that you learned from working
 > on this project?
 
-TODO WRITE / REPLACE
+ I learned a lot about the diversity of JavaFX and the realm of possibilities
+ available through JavaFX. I also learned a lot about putting threads to sleep, setting
+ delays and threads in general.
+
 
 ## Part 3: Retrospect
 
 > If you could start the project over from scratch, what do
 > you think might do differently and why?
 
-TODO WRITE / REPLACE
+ If I could start over, I would definitely create a gameplan before jumping head in.
+ the thing that I've found myself in is being overwhelmed, especially at first, and I just started writing
+ code and having to jump everywhere, editing and restarting, etc. Definitely worth planning before starting.
