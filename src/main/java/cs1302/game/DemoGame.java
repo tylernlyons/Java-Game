@@ -40,7 +40,6 @@ import javafx.scene.control.TextField;
 public class DemoGame extends Game {
     private int rng; //random number generator
     ImageView player = new ImageView("file:resources/frog.jpg");
-    private IdleCat cat;      // the not so idle cat (see IdleCat.java)
     private ImageView l = new ImageView("file:resources/log.jpg");
     private ImageView w = new ImageView("file:resources/water.jpg");
     private ImageView f = new ImageView("file:resources/frog.jpg");
@@ -74,7 +73,6 @@ public class DemoGame extends Game {
     public DemoGame(int width, int height) {
         super(width, height, 1000);            // call parent constructor
         setLogLevel(Level.INFO);             // enable logging
-        this.cat  = new IdleCat(this);       // the not so idle cat (see IdleCat.java)
         go.setFitHeight((double)height);
         go.setFitWidth((double)width);
     } // DemoGame
