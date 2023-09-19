@@ -28,7 +28,7 @@ Markdown is transformed into nice looking HTML.
 
  I learned a lot about the diversity of JavaFX and the realm of possibilities
  available through JavaFX. I also learned a lot about putting threads to sleep, setting
- delays and threads in general.
+ delays, and threads in general.
 
 
 ## Part 3: Retrospect
@@ -36,6 +36,6 @@ Markdown is transformed into nice looking HTML.
 > If you could start the project over from scratch, what do
 > you think might do differently and why?
 
- If I could start over, I would definitely create a gameplan before jumping head in.
- the thing that I've found myself in is being overwhelmed, especially at first, and I just started writing
+ If I could start over, I would definitely create a game plan before jumping in head first.
+ The thing that I've found myself in is being overwhelmed, especially at first, and I just started writing
  code and having to jump everywhere, editing and restarting, etc. Definitely worth planning before starting.
