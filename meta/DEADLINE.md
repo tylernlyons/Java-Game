@@ -1,9 +1,4 @@
-# Deadline
-
-Modify this file to satisfy a submission requirement related to the project
-deadline. Please keep this file organized using Markdown. If you click on
-this file in your GitHub repository website, then you will see that the
-Markdown is transformed into nice looking HTML.
+# About
 
 ## Part 1: App Description
 
