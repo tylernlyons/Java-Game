@@ -39,7 +39,7 @@ import javafx.scene.control.TextField;
 
 public class DemoGame extends Game {
     private int rng; //random number generator
-    ImageView player = new ImageView("file:resources/frog.jpg");
+    private ImageView player = new ImageView("file:resources/frog.jpg");
     private ImageView l = new ImageView("file:resources/log.jpg");
     private ImageView w = new ImageView("file:resources/water.jpg");
     private ImageView f = new ImageView("file:resources/frog.jpg");
