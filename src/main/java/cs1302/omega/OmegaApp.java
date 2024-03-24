@@ -37,7 +37,7 @@ public class OmegaApp extends Application {
         // some labels to display information
         Label notice = new Label("Written for WASD, aka for normal people.");
         Label instructions
-            = new Label("In order to ensure proper movemnet, make deliberate keystrokes.");
+            = new Label("In order to ensure proper movement, make deliberate keystrokes.");
 
         // demo game provided with the starter code
         DemoGame game = new DemoGame(900, 720);
