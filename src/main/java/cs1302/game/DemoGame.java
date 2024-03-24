@@ -32,10 +32,7 @@ import javafx.geometry.Insets;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.control.TextField;
 
-/**
- * An example of a simple game in JavaFX. The play can move the rectangle left/right
- * with the arrow keys or teleport the rectangle by clicking it!
- */
+
 
 public class DemoGame extends Game {
     private int rng; //random number generator
