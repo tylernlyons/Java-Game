@@ -8,7 +8,7 @@
  to the five different goals to score points. Watch out for
  the cars and the running streams. 
 
- Ensure that you have graphics forwarding capabilities. Program can be ran with "./compile.sh".
+ Ensure that you have graphics forwarding capabilities. Program can be ran with "./compile.sh" from the "frogger" directory.
 
  https://github.com/tylernlyons/Java-Game
 
